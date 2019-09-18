@@ -10,11 +10,12 @@ public class BoardMovement : MonoBehaviour
     //declare a new public vector3
     //public means we can assign it in the inspector
     //to give it an initial assignment, we have to use new Vector3(xValue, yValue, zValue)
-    public Vector3 pos = new Vector3(5f,10f,15f); //float values should be followed by the letter f
     public Transform playerPiece; //store the transform of our playerPiece ... dont forget to assign it in the inspector
     float tileAmount = 1f;
-    public Transform hazard;
+    public Transform hazard, obstacle;
+    public Transform[] manyHazards;
     public Vector3 playerStart;
+    public TextMesh playerMsg;
 
     // Start is called before the first frame update
     void Start()
@@ -25,27 +26,64 @@ public class BoardMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-        {//we are accessing the Input class and its method GetKeyDown which runs everytime the key specified is newly pressed down
-            //Keys can be specified using KeyCode
+        {
+        Vector3 newPos = playerPiece.position; //create a temporary vector3 to store a new hypothetical position
+
+        if (Input.anyKeyDown) //reset player message if any key is pressed down (when they start playing again)
+        {
+            playerMsg.text = "use WASD to move";
+
+        }
+        //we are accessing the Input class and its method GetKeyDown which runs everytime the key specified is newly pressed down
+        //Keys can be specified using KeyCode
         if (Input.GetKeyDown(KeyCode.W)) 
         {
             //show us a message in the console
             print("w key was pressed");
 
-            //modify the playerPiece position by tileAmount on the z axis
-            playerPiece.position += new Vector3(0f,0f, tileAmount);
+            //update newPos to be the new position after pressing the w key
+            newPos += new Vector3(0f, 0f, tileAmount);
+
         }
 
+        //same as above but for backwards
         if (Input.GetKeyDown(KeyCode.S))
         {
-            //we can use - to move it the opposite direction
-            playerPiece.position += new Vector3(0f, 0f, -tileAmount);
+            newPos += new Vector3(0f, 0f, -tileAmount);
         }
-
-        //if the position of our hazard (dont forget to assign it in the inspector) is the same position as our player piece...
-        if (hazard.position == playerPiece.position)
+        //same as above but for left
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            playerPiece.position = playerStart; //then reset the position to the starting position
+            newPos += new Vector3(-tileAmount, 0f, 0f);
+        }
+        //same as above but for right
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            newPos += new Vector3(tileAmount, 0f, 0f);
+        }
+        //same as above but for up
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            newPos += new Vector3(0f, tileAmount, 0f);
+        }
+        //same as above but for down
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            newPos += new Vector3(0f, -tileAmount, 0f); //update newPos to be our potential new position
+        }
+        if (obstacle.position != newPos) //only update our playerPiece position if it is NOT the same as the obstacle
+        {
+            //update the playerpiece pos to be the newPos
+            playerPiece.position = newPos;
+        }
+    //if the position of our hazard (dont forget to assign it in the inspector) is the same position as our player piece...
+        for (int i = 0; i < manyHazards.Length; i++) //use a loop to check each one of the positions in our transform array (manyhazards)
+        {
+            if (manyHazards[i].position == playerPiece.position) //check if our playerpiece is in the same position as this particular one from manyHazards
+            {
+                playerMsg.text = "u mest up ):"; //update the text property of playerMsg to tell our player what happened
+                playerPiece.position = playerStart; //then reset the position to the starting position
+            }
         }
     }
 }
