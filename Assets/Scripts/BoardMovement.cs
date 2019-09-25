@@ -16,12 +16,17 @@ public class BoardMovement : MonoBehaviour
     public Transform[] manyHazards;
     public Vector3 playerStart;
     public TextMesh playerMsg;
+    public AudioClip deathClip;
+    AudioSource myAud;
+    public Transform key;
+    bool hasKey = false;
 
     // Start is called before the first frame update
     void Start()
     {
         //store our starting position with playerStart
         playerStart = playerPiece.position;
+        myAud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -75,6 +80,18 @@ public class BoardMovement : MonoBehaviour
         {
             //update the playerpiece pos to be the newPos
             playerPiece.position = newPos;
+        } else
+        { //if youre in the same hypothetical position as the obstacle
+            if (hasKey) //if you also have the key
+            {
+                obstacle.position = new Vector3(999999999f, 9999f, 9f); //send the obstacle off screen
+            }
+        }
+        if (key.position == playerPiece.position)
+        {
+            key.gameObject.SetActive(false); //hide the key
+            playerMsg.text = "key obtained!"; //give the player a new message
+            hasKey = true; //store the value for whether we have the key or not
         }
     //if the position of our hazard (dont forget to assign it in the inspector) is the same position as our player piece...
         for (int i = 0; i < manyHazards.Length; i++) //use a loop to check each one of the positions in our transform array (manyhazards)
@@ -83,6 +100,7 @@ public class BoardMovement : MonoBehaviour
             {
                 playerMsg.text = "u mest up ):"; //update the text property of playerMsg to tell our player what happened
                 playerPiece.position = playerStart; //then reset the position to the starting position
+                myAud.PlayOneShot(deathClip, 1f);
             }
         }
     }
