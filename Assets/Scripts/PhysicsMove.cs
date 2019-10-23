@@ -19,36 +19,34 @@ public class PhysicsMove : MonoBehaviour
         //check if the key w is being pressed at all (getkey, not getkeydown... getkeydown is only once when the key is being newly pressed)
         if (Input.GetKey(KeyCode.W))
         {
-            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
-            //we are making it move backwards because our plane was created backwards
+            //access our rigidbody rb and addforce in the direction forward multiplied times a force amount
             rb.AddForce(new Vector3(0f,0f,1f) * forceAmt);
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
-            //we are making it move backwards because our plane was created backwards
+            //access our rigidbody rb and addforce in the direction backward multiplied times a force amount
             rb.AddForce(new Vector3(0f, 0f, -1f) * forceAmt);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
-            //we are making it move backwards because our plane was created backwards
+            //access our rigidbody rb and addforce in the direction left multiplied times a force amount
             rb.AddForce(new Vector3(-1f, 0f, 0f) * forceAmt);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
-            //we are making it move backwards because our plane was created backwards
+            //access our rigidbody rb and addforce in the direction right multiplied times a force amount
             rb.AddForce(new Vector3(1f, 0f, 0f) * forceAmt);
         }
         //add thrust movement in the other directions
     }
-
-    void OnCollisionEnter(Collision colReport)
+    
+    //OnCollisionEnter will run any time a collision happens between this game object and another one
+    void OnCollisionEnter(Collision colReport) //the Collision class stores all the information about the collision 
     {
-        if (colReport.gameObject.CompareTag("collectible"))
-        {
+        //we are checking the tag of the thing we hit using first the collision and then the game object to access the tag property
+        if (colReport.gameObject.CompareTag("collectible")) //does it have a tag matching this string?
+        {   //if so, destroy the gameObject we collided with
             Destroy(colReport.gameObject);
         }
     }
