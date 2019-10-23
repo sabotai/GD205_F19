@@ -14,16 +14,42 @@ public class PhysicsMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //check if the key w is being pressed at all (getkey, not getkeydown... getkeydown is only once when the key is being newly pressed)
         if (Input.GetKey(KeyCode.W))
         {
             //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
             //we are making it move backwards because our plane was created backwards
-            rb.AddForce(new Vector3(0f,0f,-1f) * forceAmt);
+            rb.AddForce(new Vector3(0f,0f,1f) * forceAmt);
         }
 
+        if (Input.GetKey(KeyCode.S))
+        {
+            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
+            //we are making it move backwards because our plane was created backwards
+            rb.AddForce(new Vector3(0f, 0f, -1f) * forceAmt);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
+            //we are making it move backwards because our plane was created backwards
+            rb.AddForce(new Vector3(-1f, 0f, 0f) * forceAmt);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            //access our rigidbody rb and addforce in the direction backwards multiplied times a force amount
+            //we are making it move backwards because our plane was created backwards
+            rb.AddForce(new Vector3(1f, 0f, 0f) * forceAmt);
+        }
         //add thrust movement in the other directions
+    }
+
+    void OnCollisionEnter(Collision colReport)
+    {
+        if (colReport.gameObject.CompareTag("collectible"))
+        {
+            Destroy(colReport.gameObject);
+        }
     }
 }
