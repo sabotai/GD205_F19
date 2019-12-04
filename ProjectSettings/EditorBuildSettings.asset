@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Week5.unity
     guid: 8c5bbdbc7ab444c908480db6de6e4271
+  - enabled: 1
+    path: Assets/Scenes/PostProcessingExample.unity
+    guid: 4133977229c374ff8ac8262458df9a82
   m_configObjects: {}
